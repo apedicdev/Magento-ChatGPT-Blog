@@ -1,0 +1,21 @@
+{
+    "name": "apedik/module-ai-blog",
+    "version": "0.1.0",
+    "description": "Mageplaza blog chatgpt support",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*",
+        "mageplaza/magento-2-blog-extension": "4.1.*"
+    },
+    "license": [
+        "GNU General Public License (GPL)"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Apedik\\AiBlog\\": ""
+        }
+    }
+}

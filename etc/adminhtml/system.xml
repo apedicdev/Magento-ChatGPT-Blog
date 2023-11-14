@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="blog">
+            <group id="ai_support" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>AI</label>
+                <field id="enabled" translate="AI support" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ai_key" translate="AI API key" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>API key</label>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+                <field id="ai_url" translate="AI API url" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <depends><field id="enabled">1</field></depends>
+                    <label>API url</label>
+                </field>
+                <field id="short_meta_description" translate="Same short/meta description" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <depends><field id="enabled">1</field></depends>
+                    <label>Same short/meta description</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Use same content for shor and meta description</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

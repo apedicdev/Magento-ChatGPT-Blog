@@ -1,0 +1,61 @@
+<?php /** @var Apedik\AiBlog\Block\Adminhtml\Post\Edit\Tab\Post $block */ ?>
+<script type="text/javascript">
+    function AIGenerateDesc() {
+        jQuery("#post_response_packet").val("Loading...");
+        let post_name = jQuery("#post_name").val();
+        jQuery.ajax({
+            contentType: "application/json",
+            headers: {Authorization: 'Bearer <?= $block->getConfig()->getAIApiKey() ?>'},
+            url: "<?= $block->getConfig()->getAIApiUrl() ?>",
+            type: "POST",
+            data: JSON.stringify({
+                "model": "gpt-3.5-turbo", "messages": [
+                    {
+                        "role": "user",
+                        "content": "write meta description about " + post_name + ""
+                    }
+                ]
+            }),
+            dataType: "json",
+            beforeSend: function (xhr) {
+            },
+            success: function (response) {
+                console.log(response);
+                <?php if ($block->getConfig()->useSameShortMetaDescription() === true): ?>
+                jQuery('#post_meta_description').val(response.choices[0].message.content);
+                jQuery('#post_short_description').val(response.choices[0].message.content);
+                <?php else:?>
+                jQuery("#post_meta_description").val(response.choices[0].message.content);
+                <?php endif;?>
+            }
+        });
+    }
+
+    function AIGeneratePost() {
+        jQuery('#post_post_content').trigger('processStart');
+        jQuery('#togglepost_post_content').click();
+        let post_name = jQuery('#post_name').val();
+        jQuery.ajax({
+            contentType: 'application\/json',
+            headers: {Authorization: 'Bearer <?= $block->getConfig()->getAIApiKey() ?>'},
+            url: '<?= $block->getConfig()->getAIApiUrl() ?>',
+            type: 'POST',
+            data: JSON.stringify({
+                'model': 'gpt-3.5-turbo', 'messages': [
+                    {
+                        'role': 'user',
+                        'content': 'write a post in html format about ' + post_name + ''
+                    }
+                ]
+            }),
+            dataType: 'json',
+            beforeSend: function (xhr) {
+            },
+            success: function (response) {
+                console.log(response);
+                jQuery('#post_post_content').trigger('processStop').val(response.choices[0].message.content);
+            }
+        });
+    }
+
+</script>
