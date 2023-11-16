@@ -4,18 +4,17 @@
         jQuery("#post_response_packet").val("Loading...");
         let post_name = jQuery("#post_name").val();
         jQuery.ajax({
-            contentType: "application/json",
-            headers: {Authorization: 'Bearer <?= $block->getConfig()->getAIApiKey() ?>'},
-            url: "<?= $block->getConfig()->getAIApiUrl() ?>",
+            url: "<?= $block->getBackendUrl()->getUrl('airequest/index/index') ?>",
             type: "POST",
-            data: JSON.stringify({
+            data: {
+                "form_key": "<?= $block->getFormKey() ?>",
                 "model": "gpt-3.5-turbo", "messages": [
                     {
                         "role": "user",
                         "content": "write meta description about " + post_name + ""
                     }
                 ]
-            }),
+            },
             dataType: "json",
             beforeSend: function (xhr) {
             },
@@ -37,8 +36,7 @@
         let post_name = jQuery('#post_name').val();
         jQuery.ajax({
             contentType: 'application\/json',
-            headers: {Authorization: 'Bearer <?= $block->getConfig()->getAIApiKey() ?>'},
-            url: '<?= $block->getConfig()->getAIApiUrl() ?>',
+            url: '<?= $block->getBackendUrl()->getUrl('airequest/index/index') ?>',
             type: 'POST',
             data: JSON.stringify({
                 'model': 'gpt-3.5-turbo', 'messages': [

@@ -6,6 +6,7 @@ namespace Apedik\AiBlog\Block\Adminhtml\Post\Edit\Tab;
 use Apedik\AiBlog\Model\Config as BlogConfig;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Model\Auth\Session;
+use Magento\Backend\Model\UrlInterface;
 use Magento\Cms\Model\Page\Source\PageLayout as BasePageLayout;
 use Magento\Cms\Model\Wysiwyg\Config;
 use Magento\Config\Model\Config\Source\Design\Robots;
@@ -20,6 +21,8 @@ use Mageplaza\Blog\{Block\Adminhtml\Post\Edit\Tab\Post as MagePlazaPost,
 
 class Post extends MagePlazaPost
 {
+    private Context $context;
+
     public function __construct(
         Context $context,
         Registry $registry,
@@ -35,6 +38,7 @@ class Post extends MagePlazaPost
         Author $author,
         AuthorStatus $status,
         private readonly BlogConfig $config,
+        private readonly UrlInterface $backendUrl,
         array $data = [])
     {
         parent::__construct(
@@ -53,6 +57,7 @@ class Post extends MagePlazaPost
             $status,
             $data,
         );
+        $this->context = $context;
     }
 
     private const DESC_BUTTON = '<button class="primary" type="button" onclick="AIGenerateDesc();">AI Generate</button>';
@@ -62,6 +67,17 @@ class Post extends MagePlazaPost
     {
         return $this->config;
     }
+
+    public function getBackendUrl(): UrlInterface
+    {
+        return $this->backendUrl;
+    }
+
+    public function getContext(): Context
+    {
+        return $this->context;
+    }
+
 
     protected function _prepareForm(): void
     {
@@ -89,7 +105,7 @@ class Post extends MagePlazaPost
     }
 
     /**
-     * Prepare form Html. call the phtm file with form.
+     * Prepare form Html. call the phtml file with form.
      *
      * @return string
      */
