@@ -1,59 +1,46 @@
 <?php /** @var Apedik\AiBlog\Block\Adminhtml\Post\Edit\Tab\Post $block */ ?>
-<script type="text/javascript">
-    function AIGenerateDesc() {
-        jQuery("#post_response_packet").val("Loading...");
-        let post_name = jQuery("#post_name").val();
+<script type='text/javascript'>
+    function sendAIRequest(requestType, postName, useSameShortMetaDescription) {
+        jQuery('#post_post_content').trigger('processStart');
+
+        let requestData = {
+            'form_key': "<?= $block->getFormKey() ?>",
+            'post_name': postName,
+            'request_type': requestType,
+        };
+
         jQuery.ajax({
             url: "<?= $block->getBackendUrl()->getUrl('airequest/index/index') ?>",
-            type: "POST",
-            data: {
-                "form_key": "<?= $block->getFormKey() ?>",
-                "model": "gpt-3.5-turbo", "messages": [
-                    {
-                        "role": "user",
-                        "content": "write meta description about " + post_name + ""
-                    }
-                ]
-            },
-            dataType: "json",
+            type: 'POST',
+            data: requestData,
+            dataType: 'json',
             beforeSend: function (xhr) {
+                // Any pre-request actions
             },
             success: function (response) {
-                console.log(response);
-                <?php if ($block->getConfig()->useSameShortMetaDescription() === true): ?>
-                jQuery('#post_meta_description').val(response.choices[0].message.content);
-                jQuery('#post_short_description').val(response.choices[0].message.content);
-                <?php else:?>
-                jQuery("#post_meta_description").val(response.choices[0].message.content);
-                <?php endif;?>
+                jQuery('#post_post_content').trigger('processStop')
+                let messageContent = response.choices[0].message.content;
+
+                if (requestType === 'description' && useSameShortMetaDescription === true) {
+                    jQuery('#post_meta_description, #post_short_description').val(messageContent);
+                } else if (requestType === 'post') {
+                    jQuery('#post_post_content').trigger('processStop').val(messageContent);
+                } else {
+                    jQuery('#post_meta_description').val(messageContent);
+                }
             }
         });
+    }
+
+    function AIGenerateDescription() {
+        let postName = jQuery('#post_name').val();
+        sendAIRequest('description', postName, <?= $block->getConfig()->useSameShortMetaDescription() === true ?>);
     }
 
     function AIGeneratePost() {
-        jQuery('#post_post_content').trigger('processStart');
         jQuery('#togglepost_post_content').click();
-        let post_name = jQuery('#post_name').val();
-        jQuery.ajax({
-            contentType: 'application\/json',
-            url: '<?= $block->getBackendUrl()->getUrl('airequest/index/index') ?>',
-            type: 'POST',
-            data: JSON.stringify({
-                'model': 'gpt-3.5-turbo', 'messages': [
-                    {
-                        'role': 'user',
-                        'content': 'write a post in html format about ' + post_name + ''
-                    }
-                ]
-            }),
-            dataType: 'json',
-            beforeSend: function (xhr) {
-            },
-            success: function (response) {
-                console.log(response);
-                jQuery('#post_post_content').trigger('processStop').val(response.choices[0].message.content);
-            }
-        });
+        let postName = jQuery('#post_name').val();
+        sendAIRequest('post', postName, false);
     }
-
 </script>
+

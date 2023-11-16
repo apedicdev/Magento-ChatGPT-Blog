@@ -16,7 +16,8 @@ use Magento\Store\Model\System\Store;
 use Mageplaza\Blog\{Block\Adminhtml\Post\Edit\Tab\Post as MagePlazaPost,
     Helper\Image,
     Model\Config\Source\Author,
-    Model\Config\Source\AuthorStatus};
+    Model\Config\Source\AuthorStatus
+};
 
 
 class Post extends MagePlazaPost
@@ -60,9 +61,6 @@ class Post extends MagePlazaPost
         $this->context = $context;
     }
 
-    private const DESC_BUTTON = '<button class="primary" type="button" onclick="AIGenerateDesc();">AI Generate</button>';
-    private const TITLE_BUTTON = '<button class="primary" type="button" onclick="AIGeneratePost();">AI Generate</button>';
-
     public function getConfig(): BlogConfig
     {
         return $this->config;
@@ -78,6 +76,22 @@ class Post extends MagePlazaPost
         return $this->context;
     }
 
+    public function getFormElement(Post|MagePlazaPost $form, string $element): void
+    {
+        $onclickElement = match ($element) {
+            'meta_description' => 'Description',
+            'name' => 'Post',
+        };
+
+        $form
+            ->getForm()
+            ->getElement($element)
+            ?->setData(
+                'after_element_html',
+                "<button class=\"primary\" type=\"button\" onclick=\"AIGenerate{$onclickElement}()\">AI Generate</button>",
+            );
+    }
+
 
     protected function _prepareForm(): void
     {
@@ -87,21 +101,8 @@ class Post extends MagePlazaPost
             return;
         }
 
-        $form
-            ->getForm()
-            ->getElement('meta_description')
-            ?->setData(
-                'after_element_html',
-                self::DESC_BUTTON . $this->getAIGenerateDescScript(),
-            );
-
-        $form
-            ->getForm()
-            ->getElement('name')
-            ?->setData(
-                'after_element_html',
-                self::TITLE_BUTTON . $this->getAIGeneratePostScript(),
-            );
+        $this->getFormElement($form, 'meta_description');
+        $this->getFormElement($form, 'name');
     }
 
     /**
@@ -109,11 +110,9 @@ class Post extends MagePlazaPost
      *
      * @return string
      */
-    public function getFormHtml()
+    public function getFormHtml(): string
     {
-        // get the current form as html content.
         $html = parent::getFormHtml();
-        //Append the phtml file after the form content.
         $html .= $this->setTemplate('Apedik_AiBlog::post/edit/tab/post.phtml')->toHtml();
         return $html;
     }

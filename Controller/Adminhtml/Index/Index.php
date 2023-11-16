@@ -36,18 +36,33 @@ class Index extends Action implements HttpPostActionInterface
             ],
         );
 
-        $jsonRequest = $this->json->serialize(
-            [
-                'model' => $this->getRequest()->getParam('model'),
-                'messages' => $this->getRequest()->getParam('messages'),
-            ],
-        );
-
-        $this->curl->post($this->config->getAIApiUrl(), $jsonRequest);
+        $this->curl->post($this->config->getAIApiUrl(), $this->getJsonRequest());
 
         $response = $this->json->unserialize($this->curl->getBody());
 
         return $this->resultJsonFactory->create()->setData($response);
 
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getJsonRequest(): string|bool
+    {
+        $requestType = $this->getRequest()->getParam('request_type');
+        $postName = $this->getRequest()->getParam('post_name');
+
+        return $this->json->serialize(
+            [
+                'model' => 'gpt-3.5-turbo', // TODO configurable
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' =>
+                            'write a ' . $requestType . ' about ' . $postName,
+                    ],
+                ],
+            ],
+        );
     }
 }
