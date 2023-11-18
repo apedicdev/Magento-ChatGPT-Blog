@@ -1,75 +1,62 @@
-# Magento Blog Extension with ChatGPT Integration
+# Magento ChatGPT Integration Module for Mageplaza Blog
 
 ## Overview
 
-Welcome to the Magento Blog Extension with ChatGPT Integration! This extension combines the power of a robust blogging platform for Magento with the conversational capabilities of ChatGPT, allowing you to enhance your online store with engaging and dynamic content.
+This Magento module extends the functionality of the Mageplaza Blog module by integrating ChatGPT for post and description generation. With this integration, you can enhance your blog posts by automatically generating relevant and engaging content using ChatGPT's natural language processing capabilities.
 
 ## Features
 
-### 1. **Blogging Platform**
+- Seamless integration with Mageplaza Blog module.
+- Automatic generation of post content using ChatGPT.
+- Enhanced post descriptions for improved SEO and user engagement.
+- Customizable settings for ChatGPT integration.
 
-- Create and manage blog posts directly within your Magento store.
-- User-friendly interface for easy content creation and editing.
-- SEO-friendly URLs and meta tags to improve search engine visibility.
+## Requirements
 
-### 2. **ChatGPT Integration**
-
-- Seamlessly integrate ChatGPT into your blog to enable conversational interactions.
-- Engage users with personalized recommendations, product suggestions, and answers to common queries.
-- Enhance user experience with natural language understanding and intelligent responses.
-
-### 3. **Customizable Chat Interface**
-
-- Tailor the chat interface to match your store's design and branding.
-- Choose from various chatbot avatars and styles to suit your website's aesthetics.
-- Control the placement and behavior of the chat widget for optimal user engagement.
+- Magento 2.x
+- Mageplaza Blog module installed and configured.
 
 ## Installation
 
-Follow these steps to install the Magento Blog Extension with ChatGPT Integration:
+   ```bash
+   composer require apedik/module-ai-blog
+   php bin/magento module:enable Apedik_AiBlog
+   php bin/magento setup:upgrade
+   php bin/magento setup:di:compile
+   ```
 
-1. **Download:** Download the extension package from [GitHub](https://github.com/example/repo).
+Configure the settings in the Magento Admin Panel.
 
-2. **Installation:**
-    - Extract the package contents into the Magento root directory.
-    - Run the following commands in the terminal:
-        ```bash
-        php bin/magento setup:upgrade
-        php bin/magento setup:di:compile
-        php bin/magento setup:static-content:deploy
-        ```
+## Configuration
 
-3. **Configuration:**
-    - Navigate to the Magento admin panel.
-    - Configure the extension settings in the "Blog" and "ChatGPT" sections of the admin dashboard.
+1. Log in to the Magento Admin Panel.
+2. Navigate to `Stores > Configuration > Mageplaza > Better Blog > AI`.
+3. Configure the following settings:
+    - **Enable AI**: Enable or disable the ChatGPT integration.
+    - **API Key**: Enter your ChatGPT API key. TODO encrypted
+    - **API URL**: https://api.openai.com/v1/chat/completions TODO default
+    - **Same short/meta description**: Use same content for short and meta description
+    - **ChatGPT Language Model**: Select the desired ChatGPT language model. TODO
+    - **Additional Configuration Options**: Configure any additional settings specific to your use case.
 
-4. **ChatGPT API Key:**
-    - Obtain a ChatGPT API key from the OpenAI platform.
-    - Enter the API key in the extension settings to enable ChatGPT integration.
+4. Click on the "Save Config" button.
 
 ## Usage
 
-1. **Create Blog Posts:**
-    - Access the "Blog" section in the Magento admin panel to create and manage blog posts.
+Once the module is installed and configured, two buttons will appear in the post edit form, located under the "Content" and "Meta Description" sections. Fill in the post name and then click these buttons to automatically generate the post and description based on the post title.
 
-2. **Configure ChatGPT:**
-    - Set up ChatGPT integration by entering the API key and configuring chat settings in the admin dashboard.
+## Support and Issues
 
-3. **Engage Users:**
-    - Once configured, users can interact with the chatbot while reading blog posts, receiving recommendations, and asking questions.
+For any issues or questions regarding this module, please [open a new issue](https://github.com/apedicdev/Magento-ChatGPT-Blog/issues) on the GitHub repository.
 
-## Support and Documentation
+## Contributing
 
-For detailed information on configuration, customization, and troubleshooting, refer to the [documentation](docs/README.md).
+We welcome contributions from the community. If you have any improvements or new features to suggest, please submit a pull request.
 
-If you encounter any issues or have questions, please reach out to our support team at [support@example.com](mailto:support@example.com).
-
-## Contribution
-
-We welcome contributions to enhance and improve this extension. If you have suggestions or want to report issues, please submit a pull request or open an issue on [GitHub](https://github.com/example/repo).
+## TODO
+- Post name validation before the requests
+- Configurable models
 
 ## License
 
-This extension is released under the [MIT License](LICENSE). Feel free to use, modify, and distribute it according to the terms of the license.
-
-Thank you for choosing the Magento Blog Extension with ChatGPT Integration! We hope it adds valuable features to your online store and improves the overall shopping experience for your customers.
+This module is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as needed.
