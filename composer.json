@@ -8,7 +8,7 @@
         "mageplaza/magento-2-blog-extension": "4.1.*"
     },
     "license": [
-        "GNU General Public License (GPL)"
+        "OSL-3.0"
     ],
     "autoload": {
         "files": [
