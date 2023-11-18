@@ -80,7 +80,7 @@ class Post extends MagePlazaPost
     {
         $onclickElement = match ($element) {
             'meta_description' => 'Description',
-            'name' => 'Post',
+            'post_content' => 'Post',
         };
 
         $form
@@ -102,7 +102,7 @@ class Post extends MagePlazaPost
         }
 
         $this->getFormElement($form, 'meta_description');
-        $this->getFormElement($form, 'name');
+        $this->getFormElement($form, 'post_content');
     }
 
     /**
